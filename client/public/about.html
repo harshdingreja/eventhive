@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<!--
+  Experiment 1: a static HTML page, served as-is from client/public (no React, no JavaScript).
+  It uses: head + meta tags, semantic sections, formatting tags, hyperlinks (external,
+  internal, email and bookmark), an image, a table, ordered/unordered/description lists,
+  and audio + video elements.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About the Council of Organizations and EventHive, its event pass system.">
+  <meta name="author" content="Harsh Dingreja">
+  <title>About COG and EventHive</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Internal CSS: styles that only this page needs -->
+  <style>
+    :root {
+      --navy: #0a1128;
+      --navy-2: #0f1934;
+      --navy-3: #1a2850;
+      --line: #26366a;
+      --ink: #eef1fb;
+      --ink-2: #b4bcd9;
+      --ink-3: #7f8ab3;
+      --purple: #8b5cf6;
+      --purple-soft: #c4b5fd;
+      --purple-deep: #2a1b5e;
+      --amber: #f5b83d;
+      --display: 'Unbounded', 'Arial Black', sans-serif;
+      --body: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    body {
+      background: var(--navy);
+      color: var(--ink);
+      font-family: var(--body);
+      line-height: 1.6;
+    }
+
+    a { color: var(--purple-soft); text-underline-offset: 3px; }
+    a:hover { color: var(--ink); }
+    a:focus-visible { outline: 2px solid var(--purple-soft); outline-offset: 3px; }
+
+    .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+
+    header.site {
+      border-bottom: 1px solid var(--line);
+      background: var(--navy-2);
+    }
+
+    header.site .wrap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px 24px;
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--ink);
+      font-family: var(--display);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    nav ul { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 0; list-style: none; }
+    nav a { color: var(--ink-2); font-weight: 600; text-decoration: none; }
+    nav a:hover { color: var(--amber); }
+
+    .hero {
+      padding: 64px 0 56px;
+      border-bottom: 1px solid var(--line);
+      background-color: var(--purple-deep);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 27.713 48'%3E%3Cpath d='M13.856 0L27.713 8V24L13.856 32L0 24V8ZM13.856 32V48' fill='none' stroke='%23F5B83D' stroke-opacity='0.16' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 28px 48.5px;
+    }
+
+    h1 {
+      max-width: 16ch;
+      font-family: var(--display);
+      font-size: clamp(2rem, 1.3rem + 3vw, 3.4rem);
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+    }
+
+    .hero p { max-width: 60ch; margin-top: 18px; color: var(--purple-soft); font-size: 1.1rem; }
+
+    /* p::first-letter: a large amber initial on the opening paragraph */
+    .intro::first-letter {
+      float: left;
+      margin: 6px 10px 0 0;
+      color: var(--amber);
+      font-family: var(--display);
+      font-size: 3.2rem;
+      line-height: 0.8;
+    }
+
+    main section { padding: 48px 0 8px; }
+
+    h2 {
+      margin-bottom: 16px;
+      font-family: var(--display);
+      font-size: 1.4rem;
+      font-weight: 500;
+    }
+
+    h3 { margin: 22px 0 8px; font-size: 1.05rem; }
+
+    section p, section li, section dd { color: var(--ink-2); max-width: 70ch; }
+    section p + p { margin-top: 12px; }
+
+    mark { padding: 0 4px; border-radius: 4px; background: var(--amber); color: var(--navy); }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+
+    figure img {
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    figcaption { margin-top: 10px; color: var(--ink-3); font-size: 0.9rem; }
+
+    ol, ul.ticks { padding-left: 1.3rem; }
+    ol li, ul.ticks li { margin: 6px 0; padding-left: 4px; }
+    ol li::marker { color: var(--amber); font-weight: 700; }
+    ul.ticks li::marker { content: '⬢  '; color: var(--purple); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--navy-2);
+      font-size: 0.95rem;
+    }
+
+    caption { padding-bottom: 10px; color: var(--ink-3); text-align: left; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; }
+    thead th { background: var(--navy-3); color: var(--ink-2); font-size: 0.85rem; }
+    tbody tr:nth-child(even) { background: rgb(26 40 80 / 0.35); }
+    tfoot td { color: var(--ink-3); font-size: 0.88rem; }
+    .table-scroll { overflow-x: auto; }
+
+    dl { display: grid; gap: 14px; }
+    dt { color: var(--ink); font-weight: 700; }
+    dd { margin-left: 0; }
+
+    .media { display: grid; grid-template-columns: 1.4fr 1fr; gap: 28px; align-items: start; }
+    video { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 14px; background: #000; }
+    audio { width: 100%; margin-top: 10px; }
+
+    .contact {
+      margin-top: 48px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--navy-2);
+    }
+
+    .cta {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      background: var(--purple);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .cta:hover { background: #7c3aed; color: #fff; }
+
+    footer {
+      margin-top: 56px;
+      padding: 24px 0 32px;
+      border-top: 1px solid var(--line);
+      color: var(--ink-3);
+      font-size: 0.9rem;
+    }
+
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; }
+
+    @media (max-width: 760px) {
+      .two-col, .media { grid-template-columns: 1fr; }
+      .wrap { padding: 0 16px; }
+      .hero { padding: 40px 0 36px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site" id="top">
+    <div class="wrap">
+      <a class="brand" href="/">
+        <img src="/favicon.svg" alt="" width="28" height="28">
+        EventHive
+      </a>
+      <nav aria-label="On this page">
+        <!-- Bookmark links: jump to a section of this same page by its id -->
+        <ul>
+          <li><a href="#about">About COG</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#calendar">Calendar</a></li>
+          <li><a href="#watch">Watch</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="wrap">
+      <h1>One council, dozens of clubs, one pass.</h1>
+      <p>
+        EventHive is how the <b>Council of Organizations</b> runs registrations and entry for every club event:
+        no paper forms, no queue at the desk, just a QR code on your phone.
+      </p>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <section id="about">
+      <div class="two-col">
+        <div>
+          <h2>About COG</h2>
+          <p class="intro">
+            The Council of Organizations brings the college's technical, cultural and sports clubs under one roof.
+            It plans the semester calendar so that events don't clash, shares venues fairly between clubs, and
+            looks after the <i>student experience</i> from the first announcement to the last check-in.
+          </p>
+          <p>
+            Before EventHive, each club ran its own Google Form and printed its own attendee list. Popular events
+            were <u>overbooked</u>, lists went missing, and the entry desk had no way to tell a real registration
+            from a screenshot. Now every event has a hard seat limit and every pass works <mark>exactly once</mark>.
+          </p>
+          <p>
+            <small>Experiment 1 also asks for superscripts and subscripts: this is the 3<sup>rd</sup> semester
+            the council has used digital passes, and the canteen's free H<sub>2</sub>O refill station sits
+            right next to the registration desk.</small>
+          </p>
+        </div>
+        <figure>
+          <img src="/media/pass-preview.jpg" width="800" height="600"
+               alt="An EventHive pass for Box Cricket League with the event details on a purple background and a QR code on an amber stub">
+          <figcaption>A student's pass. The QR code holds only the registration ID.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="how">
+      <h2>How to get your pass</h2>
+      <!-- Ordered list: these steps happen in this order -->
+      <ol>
+        <li><a href="/signup">Create a student account</a> with your college email.</li>
+        <li>Browse <a href="/events">upcoming events</a> and filter by category, date or open seats.</li>
+        <li>Press <strong>Register</strong>. If a seat is free, your pass appears instantly.</li>
+        <li>At the venue, show the QR code. A volunteer scans it and you are in.</li>
+      </ol>
+
+      <h3>What the council's admins can do</h3>
+      <!-- Unordered list: no particular order -->
+      <ul class="ticks">
+        <li>Publish, edit and delete events, with a seat limit for each.</li>
+        <li>See every participant and search by name, email or registration ID.</li>
+        <li>Check students in by camera or by typing the ID, with a log of every scan.</li>
+        <li>Follow registrations and turnout on a live dashboard.</li>
+      </ul>
+    </section>
+
+    <section id="calendar">
+      <h2>Semester calendar</h2>
+      <div class="table-scroll">
+        <table>
+          <caption>Flagship COG events this semester. Dates for each edition are on the events page.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Event</th>
+              <th scope="col">Category</th>
+              <th scope="col">Organizing club</th>
+              <th scope="col">Usual venue</th>
+              <th scope="col">Seats</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>CodeSprint 24-Hour Hackathon</td>
+              <td>Technical</td>
+              <td>CSI VESIT</td>
+              <td>Seminar Hall, 4th Floor</td>
+              <td>80</td>
+            </tr>
+            <tr>
+              <td>UI/UX Design with Figma</td>
+              <td>Workshop</td>
+              <td>ISTE VESIT</td>
+              <td>Computer Lab 405</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>AI in Healthcare: Guest Talk</td>
+              <td>Seminar</td>
+              <td>AI &amp; DS Department</td>
+              <td>Main Auditorium</td>
+              <td>150</td>
+            </tr>
+            <tr>
+              <td>Navratri Garba Night</td>
+              <td>Cultural</td>
+              <td>Cultural Council</td>
+              <td>College Ground</td>
+              <td>300</td>
+            </tr>
+            <tr>
+              <td>Box Cricket League</td>
+              <td>Sports</td>
+              <td>Sports Council</td>
+              <td>Sports Turf</td>
+              <td>48</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4">Total seats across flagship events</td>
+              <td>581</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+    <section id="watch">
+      <h2>See it in action</h2>
+      <div class="media">
+        <div>
+          <!-- Video element: controls shows play/pause; the poster shows before playing -->
+          <video controls preload="metadata" poster="/media/walkthrough-poster.jpg" width="800" height="600">
+            <source src="/media/eventhive-walkthrough.mp4" type="video/mp4">
+            Your browser cannot play this video. <a href="/media/eventhive-walkthrough.mp4">Download it instead</a>.
+          </video>
+        </div>
+        <div>
+          <p>
+            A 15-second tour: logging in, finding an event, the digital pass, the admin dashboard and a
+            successful check-in at the gate.
+          </p>
+          <h3>A welcome from the council</h3>
+          <!-- Audio element -->
+          <audio controls preload="metadata">
+            <source src="/media/welcome.m4a" type="audio/mp4">
+            Your browser cannot play this audio clip.
+          </audio>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2>Questions students ask</h2>
+      <!-- Description list: a term (dt) followed by its explanation (dd) -->
+      <dl>
+        <dt>Can I register a friend?</dt>
+        <dd>No. Every pass belongs to one account, and the volunteer at the gate checks the name on it.</dd>
+
+        <dt>The event says "Full". Is there a waiting list?</dt>
+        <dd>Not yet. Seats free up only if the organizers raise the capacity, so check back before the event.</dd>
+
+        <dt>What if my phone dies?</dt>
+        <dd>Tell the volunteer your registration ID (it looks like <code>EH-7K3F-9Q2A</code>), or print the pass beforehand.</dd>
+
+        <dt>Can a screenshot of someone else's pass get me in?</dt>
+        <dd>Only once, and only if it hasn't been used yet; the second scan is rejected and logged.</dd>
+      </dl>
+
+      <div class="contact">
+        <h2>Running an event?</h2>
+        <p>
+          Club coordinators can ask the council for an admin account. Write to
+          <!-- Email link: opens the visitor's mail app. Replace with the council's real address. -->
+          <a href="mailto:cog.eventhive@example.com?subject=Admin%20account%20for%20our%20club">cog.eventhive@example.com</a>
+          or read how React apps are built on the
+          <!-- External link: opens another website in a new tab -->
+          <a href="https://react.dev" target="_blank" rel="noopener noreferrer">official React documentation</a>.
+        </p>
+        <!-- Internal link: another page of this same site -->
+        <a class="cta" href="/login">Open EventHive</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>&copy; 2026 Council of Organizations. Built with HTML, CSS, React, Node, Express, PostgreSQL and MongoDB.</span>
+      <a href="#top">Back to top</a>
+    </div>
+  </footer>
+</body>
+</html>

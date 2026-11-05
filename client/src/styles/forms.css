@@ -1,0 +1,163 @@
+/* Experiment 2: forms styled with CSS3 selectors, pseudo-classes and pseudo-elements.
+   Each rule says which selector feature it demonstrates. */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 16px;
+}
+
+.form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 6px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field__label {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--ink);
+}
+
+/* ::after pseudo-element: an amber star after required labels, added by CSS, not HTML. */
+.field__label--required::after {
+  content: ' *';
+  color: var(--amber);
+}
+
+.field__hint {
+  font-size: 0.84rem;
+  color: var(--ink-3);
+}
+
+.field__error {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--red);
+}
+
+/* ::before pseudo-element: a round "!" badge in front of every error message. */
+.field__error::before {
+  content: '!';
+  flex-shrink: 0;
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--red);
+  color: var(--navy-950);
+  font-size: 0.7rem;
+  font-weight: 800;
+  transform: translateY(2px);
+}
+
+/* Attribute selectors inside :is(): every text-like input gets the same look. */
+input:is([type='text'], [type='email'], [type='password'], [type='search'], [type='date'], [type='time'], [type='number']),
+input:not([type]),
+select,
+textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--navy-600);
+  border-radius: var(--radius-sm);
+  background-color: var(--navy-950);
+  color: var(--ink);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+textarea {
+  min-height: 110px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+/* ::placeholder pseudo-element: the grey hint text inside empty inputs. */
+::placeholder {
+  color: var(--ink-3);
+  opacity: 1;
+}
+
+/* :hover pseudo-class (combined with :not): the pointer is over a field that isn't focused. */
+:is(input, select, textarea):hover:not(:focus, :disabled) {
+  border-color: var(--ink-3);
+}
+
+/* :focus pseudo-class: the field currently being typed in. */
+:is(input, select, textarea):focus {
+  outline: none;
+  border-color: var(--purple);
+  box-shadow: var(--focus-ring);
+}
+
+/* :focus-within pseudo-class: the label lights up while its field has focus. */
+.field:focus-within .field__label {
+  color: var(--purple-300);
+}
+
+/* Attribute selector on aria-invalid: fields the validator rejected turn red. */
+.field :is(input, select, textarea)[aria-invalid='true'] {
+  border-color: var(--red);
+}
+
+.field :is(input, select, textarea)[aria-invalid='true']:focus {
+  box-shadow: 0 0 0 3px rgb(251 113 133 / 0.35);
+}
+
+/* :disabled pseudo-class */
+:is(input, select, textarea):disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* A custom arrow for <select>, drawn as a background image. */
+select {
+  appearance: none;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23B4BCD9' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  cursor: pointer;
+}
+
+/* Browser-specific pseudo-element: make the date/time picker icon visible on navy. */
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='time']::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+  cursor: pointer;
+}
+
+.demo-accounts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--navy-700);
+  font-size: 0.88rem;
+  color: var(--ink-3);
+}
+
+@media (max-width: 600px) {
+  .form__grid {
+    grid-template-columns: 1fr;
+  }
+}

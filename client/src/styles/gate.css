@@ -1,0 +1,233 @@
+/* Gate check-in screen */
+.gate {
+  display: grid;
+  grid-template-columns: minmax(300px, 400px) minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+
+.gate__controls {
+  position: sticky;
+  top: 88px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.gate__count {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--navy-850);
+}
+
+.gate__count-number {
+  color: var(--green);
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.gate__count > span:last-child {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+}
+
+.gate__count small {
+  color: var(--ink-3);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.gate__camera,
+.gate__manual {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gate__manual-row {
+  display: flex;
+  gap: 8px;
+}
+
+.gate__manual-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.code-input {
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.scanner__view {
+  min-height: 240px;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: #000;
+}
+
+.scanner--error .scanner__view {
+  display: none;
+}
+
+.scanner__view video {
+  width: 100% !important; /* html5-qrcode sets an inline width */
+}
+
+.scanner__error {
+  margin-top: 8px;
+  color: var(--amber);
+  font-size: 0.9rem;
+}
+
+.gate__result {
+  min-width: 0;
+}
+
+.scan-result {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding: 22px;
+  border: 1px solid var(--navy-700);
+  border-radius: var(--radius-lg);
+  background: var(--navy-900);
+  animation: result-in 0.25s ease-out;
+}
+
+/* Plays once per scan (the component gets a new key), confirming that something changed. */
+@keyframes result-in {
+  from {
+    opacity: 0.3;
+    transform: scale(0.98);
+  }
+}
+
+.scan-result--idle {
+  border-style: dashed;
+  animation: none;
+}
+
+.scan-result--idle .scan-result__icon { color: var(--ink-3); }
+.scan-result--success { border-color: var(--green); background: rgb(52 211 153 / 0.1); }
+.scan-result--success .scan-result__icon { color: var(--green); }
+.scan-result--amber { border-color: var(--amber); background: rgb(245 184 61 / 0.1); }
+.scan-result--amber .scan-result__icon { color: var(--amber); }
+.scan-result--danger { border-color: var(--red); background: rgb(251 113 133 / 0.1); }
+.scan-result--danger .scan-result__icon { color: var(--red); }
+
+.scan-result__icon {
+  flex-shrink: 0;
+}
+
+.scan-result p {
+  color: var(--ink-2);
+}
+
+.scan-result__title {
+  margin-bottom: 4px;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.scan-result p.scan-result__title {
+  color: var(--ink);
+}
+
+.scan-result__who {
+  margin-bottom: 4px;
+  font-size: 1.05rem;
+}
+
+.scan-result__who strong {
+  color: var(--ink);
+}
+
+.log-list {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: 1px solid var(--navy-800);
+  border-radius: var(--radius);
+  background: var(--navy-900);
+  list-style: none;
+}
+
+.log-item {
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--navy-800);
+}
+
+.log-item:last-child {
+  border-bottom: 0;
+}
+
+.log-item .badge {
+  justify-self: start;
+  margin-top: 2px;
+}
+
+.log-item__main p {
+  font-size: 0.92rem;
+}
+
+.log-item__main .muted {
+  font-size: 0.84rem;
+}
+
+.log-item__note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  color: var(--amber-300);
+}
+
+.log-item__note-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.log-item__note-form input {
+  flex: 1 1 200px;
+  min-height: 34px;
+  padding: 4px 10px;
+}
+
+.log-item__actions {
+  display: flex;
+  gap: 2px;
+}
+
+@media (max-width: 860px) {
+  .gate {
+    grid-template-columns: 1fr;
+  }
+
+  .gate__controls {
+    position: static;
+  }
+}
+
+@media (max-width: 560px) {
+  .log-item {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
