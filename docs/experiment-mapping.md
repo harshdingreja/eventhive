@@ -17,7 +17,7 @@ Use this during the evaluation: for each experiment, open the file and show the 
 | 10 | PostgreSQL + Sequelize CRUD | Users, events, registrations with associations, a transaction and a row lock | `server/src/models/*.js`, `server/src/services/registrationService.js`, `server/src/routes/events.js` | Admin creates, edits and deletes an event; `psql eventhive -c 'SELECT * FROM "Events";'` |
 | 11 | MongoDB + Mongoose CRUD | Gate log: create on every scan, read with filters, update a note, delete one or all | `server/src/models/EntryLog.js`, `server/src/routes/entryLogs.js`, `server/src/services/checkinService.js` | Scan the same pass twice, add a note to the log entry, delete it; `mongosh eventhive --eval 'db.entrylogs.find()'` |
 | 12 | REST API consumed by React | Every page loads data from the Express API with `fetch` | `client/src/lib/api.js`, `client/src/hooks/useApi.js`, `server/src/app.js` (`cors`) | Browser DevTools, Network tab: `/api/events` returning JSON |
-| 13 | Deploy to Vercel | Static build of `client/`, with SPA rewrites | `client/vercel.json`, README "Deploying" | Not required for the demo; steps are in the README |
+| 13 | Deploy to Vercel | Static build of `client/`, with SPA rewrites; deployed straight from the GitHub repo | `vercel.json` (build settings and rewrites), README "Deploying" | Open the Vercel link: the About page and the login screen load. Explain that the API and databases run on the laptop, so login there says "Cannot reach the EventHive server" |
 
 ## Extras worth mentioning (beyond the manual)
 

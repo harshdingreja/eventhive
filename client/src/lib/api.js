@@ -10,6 +10,8 @@ export class ApiError extends Error {
   }
 }
 
+const SERVER_UNREACHABLE = 'Cannot reach the EventHive server. Check that it is running.';
+
 class ApiClient {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
@@ -35,17 +37,16 @@ class ApiClient {
       });
     } catch {
       // fetch only rejects when the request never got an answer (server down, no network).
-      throw new ApiError(0, 'Cannot reach the EventHive server. Check that it is running.');
+      throw new ApiError(0, SERVER_UNREACHABLE);
     }
 
     if (response.status === 204) return null;
 
-    let data = null;
-    try {
-      data = await response.json();
-    } catch {
-      // Not JSON (e.g. a proxy error page). Handled below by the status code.
-    }
+    // Our Express API always answers in JSON. Anything else (an HTML page from a static host
+    // such as Vercel with no API behind it, or a proxy error page) means the server isn't there.
+    const isJson = (response.headers.get('content-type') || '').includes('application/json');
+    if (!isJson) throw new ApiError(0, SERVER_UNREACHABLE);
+    const data = await response.json();
 
     if (!response.ok) {
       if (response.status === 401 && this.token && this.onUnauthorized) this.onUnauthorized();

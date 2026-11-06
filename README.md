@@ -151,10 +151,8 @@ client/src/
 
 ## Deploying (Experiment 13)
 
-The frontend is a static Vite build (`npm run build` → `client/dist`) and deploys to Vercel. Import the GitHub repo, then set:
-- Root Directory: `client`
-- Build Command: `npm run build`
-- Output Directory: `dist`
-- Environment variable: `VITE_API_URL=https://<your-api-host>/api`
+The frontend is a static Vite build (`npm run build` → `client/dist`) and deploys to Vercel. On vercel.com/new, pick this repo under "Import Git Repository" and click Deploy. No settings are needed: the root `vercel.json` tells Vercel to install and build `client/` and serve `client/dist`, and it sends every path to `index.html` so React Router's pages work on refresh.
+
+Without a hosted API, the deployed site shows the About page and every screen, and logging in says "Cannot reach the EventHive server". To connect a hosted API, add the environment variable `VITE_API_URL=https://<your-api-host>/api` in Vercel and redeploy.
 
 The API needs a host that runs Node continuously, because of the reminder job (for example Render or Railway). It also needs hosted databases: Neon for PostgreSQL and MongoDB Atlas. Set the server variables above there, with `CLIENT_ORIGIN` set to the Vercel URL.
